@@ -6,20 +6,6 @@ Repository Overview
 
 Each folder in this repository represents a standalone Python project focused on a specific concept or use case. These projects emphasize clean logic, readability, and core programming fundamentals rather than heavy frameworks.
 
-Included Projects
-
-Expense Tracker
-A simple program for tracking expenses, focused on user input handling, basic data processing, and program structure.
-
-Number Guessing Game
-An interactive console-based game demonstrating control flow, loops, conditional logic, and user interaction.
-
-Python Calculator
-A basic calculator application implementing arithmetic operations and input validation.
-
-Weather App
-A small application designed to work with external data (such as APIs or predefined datasets), showcasing basic data retrieval and processing.
-
 Skills Demonstrated
 
 Python fundamentals (variables, conditionals, loops, functions)
