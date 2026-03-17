@@ -39,18 +39,50 @@ js = Javascript('''
 ''')
 
 #Convert image into a NumPy array.
+#Display JS code in a notebook for browser interaction
+#Executes the java function and return a capture from the webcam 
+#Splits data string into metadata and base64-encoded image.
+#Decodes the base64 string into raw image data
+#Converts raw bytes into a image object
+#Converts image into numpy array and returns it
 def capture_frame():
-    display(js) # Display JS code in a notebook for browser interaction
-    data = eval_js("captureImage()") #Executes the java function and return a capture from the webcam 
-    _, encoded = data.split(',',1)   # Splits data string into metadata and base64-encoded image.
-    image_bytes = base64.b64decode(encoded) # Decodes the base64 string into raw image data
-    image = PIL.Image.open(io.BytesIO(image_bytes))  # Converts raw bytes into a image object
-    return np.array(image)  #Converts image into numpy array and returns it
+    display(js) 
+    data = eval_js("captureImage()") 
+    _, encoded = data.split(',',1)   
+    image_bytes = base64.b64decode(encoded) 
+    image = PIL.Image.open(io.BytesIO(image_bytes))  
+    return np.array(image)  
 
 #Function to count fingers and thumb
+#Defines the landmarks of the index, middle, ring, and pink fingers
+#Initlizes  a counter for raised fingers
+#Retrieves the hand landmark from the hand_landmarks object
+#Loop through finger tips and check if the fingertip is above the base of the finger by comparing Y coordinates
 def count_fingers(hand_landmarks):
-    finger_tips = [8,12,16,20] #Defines the landmarks of the index, middle, ring, and pink fingers
-    fingers_up = 0 # Initlizes  a counter for raised fingers
-    landmarks = hand_landmarks.landmark #Retrieves the hand landmark from the hand_landmarks object
+    finger_tips = [8,12,16,20] 
+    fingers_up = 0 
+    landmarks = hand_landmarks.landmark 
+
+    for tip in finger_tips:
+        if landmarks[tip].y < landmarks[tip - 2].y: 
+            fingers_up +=1
+    return fingers_up
+
+def detect_thumb(hand_landmarks):
+    landmarks = hand_landmarks.landmark
+    if landmarks[4].y < landmarks[1].y:
+        return 1
+    return 0
+
+#Capture and process the image from webcam and return it as NumPy array
+#Converts Image from RGB to BGR format for OpenCV processing
+#Resizes the image to 640x480 pixels
+# Processes the resized frame to detect hand landmarks using MediaPipe.
+print("Please run the code and show your hand to the camera!")
+frame = capture_frame()
+
+frame = cv2.cvtColor(frame,cv2.COLOR_RGB2BGR)
+frame_resized = cv2.resize(frame,(640,480))
+results = hands.process(cv2.cvtColor(frame_resized,cv2.COLOR_RGB2BGR))
 
             
