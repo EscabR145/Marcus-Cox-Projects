@@ -2,8 +2,9 @@ import tkinter as tk
 import requests
 from PIL import Image, ImageTk #TK image support
 from pathlib import Path
+import os
 
-API_KEY = "593a3d11a2684a56959214937250110"
+API_KEY = os.getenv("API_KEY")
 BASE_URL = "http://api.weatherapi.com/v1/current.json"
 
 #Function to get API calls

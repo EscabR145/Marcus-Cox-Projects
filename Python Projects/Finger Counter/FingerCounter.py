@@ -85,4 +85,16 @@ frame = cv2.cvtColor(frame,cv2.COLOR_RGB2BGR)
 frame_resized = cv2.resize(frame,(640,480))
 results = hands.process(cv2.cvtColor(frame_resized,cv2.COLOR_RGB2BGR))
 
+#Function to Check for Hands & Counting Fingers
+if results.multi_hand_landmarks:
+    for hand_landmarks in results.multi_hand_landmarks:
+        mp_draw.draw_landmarks(frame_resized, hand_landmarks, mp_hands.HAND_CONNECTIONS) # Draw landmarks and connections for each hand on the frame
+        fingers_up = count_fingers(hand_landmarks) 
+        thumb_up = detect_thumb(hand_landmarks)
+
+        #Display finger count on the frame
+        cv2.putText(frame_resized, f'Fingers: {fingers_up}', (50,100), cv2.FONT_HERSHEY_SIMPLEX,1,(0,255,255),2)
+        if thumb_up == 1:
+            cv2.putText(frame_resized, 'Thumb 1',(50,150),cv2.FONT_HERSHEY_SIMPLEX,1,(255,255,0),2)
+
             
